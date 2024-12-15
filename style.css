@@ -1,0 +1,118 @@
+/* style.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    width: 350px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.inner_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.display {
+    width: 100%;
+}
+
+.display input {
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    text-align: right;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    outline: none;
+}
+
+.side-button, .number {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.side-button {
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+}
+
+.number {
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+}
+
+button {
+    height: 50px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    background-color: #00408b;
+}
+
+#clear {
+    background-color: #f44336;
+}
+
+#clear:hover {
+    background-color: #d32f2f;
+}
+
+#clear:active {
+    background-color: #b71c1c;
+}
+
+#equal {
+    background-color: #28a745;
+}
+
+#equal:hover {
+    background-color: #218838;
+}
+
+#equal:active {
+    background-color: #1e7e34;
+}
+
+.operation {
+    background-color: #4a4a4a;
+}
+
+.operation:hover {
+    background-color: #3a3a3a;
+}
+
+.operation:active {
+    background-color: #2a2a2a;
+}
