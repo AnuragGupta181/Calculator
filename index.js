@@ -1,138 +1,99 @@
-const displayResult = document.getElementById('display-result');
-const clearButton = document.getElementById('clear');
-const equalButton = document.getElementById('equal');
-const addButton = document.getElementById('add');
-const subtractButton = document.getElementById('sub');
-const multiplyButton = document.getElementById('multiply');
-const divideButton = document.getElementById('division');
-const numberButtons = document.querySelectorAll('.number button');
-const pointButton = document.getElementById('point');
+// Select input and output fields
+let input_display = document.querySelector('#input-text');
+let output_display = document.querySelector('#output-text');
 
-let currentOperand = '';
-let previousOperand = '';
-let operator = '';
+// Select buttons
+let buttons = document.querySelectorAll('.normal_button');
+let clear_button = document.querySelector('#clear');
+let equal_button = document.querySelector('#equal');
+let operations = document.querySelectorAll('.operation');
 
-// Update the display
-function updateDisplay() {
-  displayResult.value = currentOperand || '0';
-}
-
-// Handle number and point input
-function handleNumberClick(event) {
-  const input = event.target.textContent;
-
-  // Prevent multiple decimals in the same number
-  if (input === '.' && currentOperand.includes('.')) return;
-
-  currentOperand += input;
-  updateDisplay();
-}
-
-// Handle operator input
-function handleOperatorClick(event) {
-  const input = event.target.textContent;
-  processOperator(input);
-}
-
-// Process operator logic
-function processOperator(input) {
-  if (currentOperand === '' && previousOperand !== '') {
-    operator = input;
-    return;
-  }
-
-  if (currentOperand !== '') {
-    if (previousOperand === '') {
-      previousOperand = currentOperand;
-      currentOperand = '';
-    } else {
-      compute();
-    }
-    operator = input;
-    updateDisplay();
-  }
-}
-
-// Perform computation
-function compute() {
-  let result;
-  const prev = parseFloat(previousOperand);
-  const curr = parseFloat(currentOperand);
-
-  if (isNaN(prev) || isNaN(curr)) return;
-
-  switch (operator) {
-    case '+':
-      result = prev + curr;
-      break;
-    case '-':
-      result = prev - curr;
-      break;
-    case 'X':
-      result = prev * curr;
-      break;
-    case '/':
-      result = curr !== 0 ? prev / curr : 'Error: Div by 0';
-      break;
-    default:
-      result = 'Error';
-  }
-
-  currentOperand = result.toString();
-  previousOperand = '';
-  operator = '';
-}
-
-// Handle the equal button
-function handleEqualClick() {
-  if (currentOperand !== '' && previousOperand !== '') {
-    compute();
-    updateDisplay();
-  }
-}
-
-// Handle the clear button
-function handleClearClick() {
-  currentOperand = '';
-  previousOperand = '';
-  operator = '';
-  updateDisplay();
-}
-
-// Handle keyboard input
-function handleKeyboardInput(event) {
-  const key = event.key;
-
-  // Allow only valid inputs: numbers, operators, and specific keys
-  if (!isNaN(key) || key === '.') {
-    if (key === '.' && currentOperand.includes('.')) return;
-    currentOperand += key;
-    updateDisplay();
-  } else if (['+', '-', '*', '/'].includes(key)) {
-    const mappedOperator = key === '*' ? 'X' : key; // Map '*' to 'X'
-    processOperator(mappedOperator);
-  } else if (key === 'Enter' || key === '=') {
-    handleEqualClick();
-  } else if (key === 'Backspace') {
-    currentOperand = currentOperand.slice(0, -1);
-    updateDisplay();
-  } else if (key.toLowerCase() === 'c') {
-    handleClearClick();
-  }
-}
-
-// Add event listeners
-numberButtons.forEach(button => {
-  button.addEventListener('click', handleNumberClick);
+// Add click event to number buttons
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        input_display.value += button.innerHTML;
+    });
 });
 
-addButton.addEventListener('click', handleOperatorClick);
-subtractButton.addEventListener('click', handleOperatorClick);
-multiplyButton.addEventListener('click', handleOperatorClick);
-divideButton.addEventListener('click', handleOperatorClick);
-equalButton.addEventListener('click', handleEqualClick);
-clearButton.addEventListener('click', handleClearClick);
-pointButton.addEventListener('click', handleNumberClick);
+// Add click event to operation buttons
+operations.forEach((operation) => {
+    operation.addEventListener('click', () => {
+        input_display.value += operation.innerHTML;
+    });
+});
 
-// Listen for keyboard events
-document.addEventListener('keydown', handleKeyboardInput);
+// Evaluate the expression
+equal_button.addEventListener('click', () => {
+    try {
+        // Replace 'x' with '*' for multiplication
+        let expression = input_display.value.replace(/x/gi, '*');
+        // Evaluate the expression
+        output_display.value = eval(expression);
+    } catch (error) {
+        output_display.value = 'Error!';
+    }
+});
+
+// Clear the input and output
+clear_button.addEventListener('click', () => {
+    input_display.value = '';
+    output_display.value = '';
+});
+
+
+
+
+
+
+
+
+
+// // Select input and output fields
+// let input_display = document.querySelector('#input-text');
+// let output_display = document.querySelector('#output-text');
+
+// // Select buttons
+// let buttons = document.querySelectorAll('.normal_button');
+// let clear_button = document.querySelector('#clear');
+// let equal_button = document.querySelector('#equal');
+// let operations = document.querySelectorAll('.operation');
+
+// // Add click event to number buttons
+// buttons.forEach((button) => {
+//     button.addEventListener('click', () => {
+//         input_display.value += button.innerHTML;
+//     });
+// });
+
+// // Add click event to operation buttons
+// operations.forEach((operation) => {
+//     operation.addEventListener('click', () => {
+//         input_display.value += operation.innerHTML;
+//     });
+// });
+
+// // Evaluate the expression (Send to backend on "=" click)
+// equal_button.addEventListener('click', () => {
+//     const expression = input_display.value.replace(/x/g, '*'); // Replace 'x' with '*'
+
+//     // Send the expression to the Python backend
+//     fetch('http://127.0.0.1:5000/calculate', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ expression: expression }),
+//     })
+//         .then((response) => response.json())
+//         .then((data) => {
+//             output_display.value = data.result; // Display the result from the backend
+//         })
+//         .catch((error) => {
+//             output_display.value = 'Error!';
+//             console.error('Error:', error);
+//         });
+// });
+
+// // Clear the input and output
+// clear_button.addEventListener('click', () => {
+//     input_display.value = '';
+//     output_display.value = '';
+// });
